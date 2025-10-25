@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCountryDto, CountryResponseDto, StatusResponseDto } from './dto/country.dto';
@@ -6,6 +7,8 @@ import axios from 'axios';
 import * as fs from 'fs';
 import * as path from 'path';
 import nodeHtmlToImage from 'node-html-to-image';
+import puppeteer from 'puppeteer';
+import os from 'os';
 
 @Injectable()
 export class CountriesService {
@@ -325,12 +328,27 @@ export class CountriesService {
     const imagePath = path.join(cacheDir, 'summary.png');
     
     try {
+
+       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+       const platform = os.platform();
+      let executablePath: string | undefined;
+
+      if (platform === 'win32') {
+        executablePath = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
+      } else if (platform === 'darwin') {
+        executablePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+      } else if (platform === 'linux') {
+        executablePath = '/usr/bin/google-chrome-stable';
+      } else {
+        executablePath = puppeteer.executablePath();
+      }
+
       await nodeHtmlToImage({
         output: imagePath,
         html: htmlContent,
         type: 'png',
         puppeteerArgs: {
-          executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+          executablePath,
           // args: [
           //   '--no-sandbox',
           //   '--disable-setuid-sandbox',
