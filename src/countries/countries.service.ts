@@ -348,13 +348,13 @@ export class CountriesService {
         html: htmlContent,
         type: 'png',
         puppeteerArgs: {
-          executablePath,
-          // args: [
-          //   '--no-sandbox',
-          //   '--disable-setuid-sandbox',
-          //   '--disable-dev-shm-usage',
-          //   '--disable-gpu'
-          // ]
+          executablePath: executablePath ?? "/usr/bin/google-chrome-stable",
+          args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-gpu'
+          ]
         }
       });
       
