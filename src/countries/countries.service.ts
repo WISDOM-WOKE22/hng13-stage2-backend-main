@@ -337,12 +337,7 @@ export class CountriesService {
           //   '--disable-dev-shm-usage',
           //   '--disable-gpu'
           // ]
-        },
-        // // Add viewport dimensions to match HTML dimensions
-        // content: {
-        //   width: 800,
-        //   height: 600
-        // }
+        }
       });
       
       if (!fs.existsSync(imagePath)) {
